@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Predict Obesity</title>
+</head>
+
+<body>
+    <h1>Prediksi Obesitas</h1>
+    <form id="predictForm">
+        <label>Age: <input type="number" name="age" required></label><br>
+        <label>Gender:
+            <select name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </label><br>
+        <label>Height (cm): <input type="number" name="height_cm" required></label><br>
+        <label>Weight (kg): <input type="number" name="weight_kg" required></label><br>
+        <label>Activity (0-1): <input type="number" name="activity" step="0.01" required></label><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("predictForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const data = {
+                age: parseInt(form.age.value),
+                gender: form.gender.value,
+                height_cm: parseFloat(form.height_cm.value),
+                weight_kg: parseFloat(form.weight_kg.value),
+                activity: parseFloat(form.activity.value)
+            };
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    document.getElementById("result").innerText =
+                        `Predicted: ${result.predicted_label} (class ${result.predicted_class})`;
+                } else {
+                    document.getElementById("result").innerText =
+                        `Error: ${result.message}`;
+                }
+
+            } catch (err) {
+                document.getElementById("result").innerText = "Error: " + err.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
