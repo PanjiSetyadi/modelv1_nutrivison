@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekomendasi Makanan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            max-width: 600px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #e9f7e9;
+        }
+
+        .result h2 {
+            margin-top: 0;
+        }
+
+        .error {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Rekomendasi Makanan</h1>
+        <label for="food_name">Masukkan nama makanan:</label>
+        <input type="text" id="food_name" placeholder="Contoh: abon">
+        <button onclick="getRecommendation()">Dapatkan Rekomendasi</button>
+
+        <div id="result" class="result" style="display:none;">
+            <h2>Informasi Makanan:</h2>
+            <div id="input_food"></div>
+            <h2>Rekomendasi Makanan:</h2>
+            <div id="recommended_food"></div>
+        </div>
+
+        <div id="error" class="error" style="display:none;"></div>
+    </div>
+
+    <script>
+        async function getRecommendation() {
+            const food_name = document.getElementById('food_name').value.trim();
+            if (!food_name) {
+                alert("Masukkan nama makanan terlebih dahulu.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ food_name: food_name })
+                });
+
+                const data = await response.json();
+
+                // Reset UI
+                document.getElementById('result').style.display = 'none';
+                document.getElementById('error').style.display = 'none';
+
+                if (data.status === 'success') {
+                    const recommendedFood = data.recommendations[0]; // Ambil rekomendasi pertama
+                    const food = data.input_food;
+
+                    // Tampilkan informasi makanan input
+                    document.getElementById('input_food').innerHTML = `
+                    <p><strong>${food.name}</strong></p>
+                    <p>Kalori: ${food.calories}</p>
+                    <p>Proteins: ${food.proteins}g</p>
+                    <p>Lemak: ${food.fat}g</p>
+                    <p>Karbohidrat: ${food.carbohydrate}g</p>
+                    ${food.image ? `<img src="${food.image}" alt="${food.name}" width="100">` : ''}
+                `;
+
+                    // Tampilkan hasil rekomendasi
+                    document.getElementById('recommended_food').innerHTML = `
+                    <p><strong>${recommendedFood.name}</strong></p>
+                    <p>Kalori: ${recommendedFood.calories}</p>
+                    <p>Proteins: ${recommendedFood.proteins}g</p>
+                    <p>Lemak: ${recommendedFood.fat}g</p>
+                    <p>Karbohidrat: ${recommendedFood.carbohydrate}g</p>
+                    ${recommendedFood.image ? `<img src="${recommendedFood.image}" alt="${recommendedFood.name}" width="100">` : ''}
+                `;
+                    document.getElementById('result').style.display = 'block';
+                } else {
+                    document.getElementById('error').innerHTML = data.message;
+                    document.getElementById('error').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('error').innerHTML = "Terjadi kesalahan. Coba lagi nanti.";
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
