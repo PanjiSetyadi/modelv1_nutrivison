@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
 # Load model dan preprocessing
-model = load_model("model_obesitas.keras")
-scaler = joblib.load("scaler.pkl")
+model_obesitas = load_model("model_obesitas.keras")
+scaler_obesitas = joblib.load("scaler.pkl")
 label_encoder = joblib.load("label_encoder.pkl")
 
 
@@ -60,10 +60,10 @@ def predict():
 
         # Siapkan input dan scaling
         input_array = np.array([[age, gender_num, height_cm, weight_kg, bmi, activity]])
-        input_scaled = scaler.transform(input_array)
+        input_scaled = scaler_obesitas.transform(input_array)
 
         # Prediksi
-        prediction = model.predict(input_scaled)
+        prediction = model_obesitas.predict(input_scaled)
         predicted_class = np.argmax(prediction)
         predicted_label = label_encoder.inverse_transform([predicted_class])[0]
 
