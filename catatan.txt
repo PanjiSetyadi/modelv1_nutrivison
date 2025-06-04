@@ -1,6 +1,17 @@
 Cara menggunakan apk ini
 "pertama masuk terminal nji terus ketik ae python app.py ngko apk ter run nanti ada url bawaan (http://127.0.0.1:5000) buka di browser"
 
+
+pertama-tama install dependenci ini :
+pip install Flask==2.3.3
+pip install tensorflow==2.15.0
+pip install scikit-learn==1.4.2
+pip install joblib==1.3.2
+pip install numpy==1.26.4
+pip install flask-cors==4.0.0
+
+
+
 End point / Route :
 Model 1 ada pada file app.py (line 43 ) ini end point nya "http://127.0.0.1:5000/predict" 
 Model 2 ada pada file app.py (line 85) ini end pointnya nanti "http://127.0.0.1:5000/recommend"
