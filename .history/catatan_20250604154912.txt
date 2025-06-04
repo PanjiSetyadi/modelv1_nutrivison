@@ -21,11 +21,11 @@ Nanti bisa di cek di postman dulu bisa nji untuk ke 2 end point itu
 contoh inputan test postman :
 model 1 :
 {
-    "age": 20,
+    "age": "20",
     "gender": "male",
-     "height_cm" : 170,
-    "weight_kg" : 55,
-    "activity" : 2
+     "height_cm" : "170",
+    "weight_kg" : "55",
+    "activity" : "2"
 }
 
 outputnya nanti = normal
