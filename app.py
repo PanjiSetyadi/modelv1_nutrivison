@@ -26,7 +26,10 @@ X = scaler.transform(data[features])
 
 app = Flask(__name__)
 
-CORS(app, origins=["http://localhost:5173", "https://web-production-165e2.up.railway.app"])
+
+CORS(app,
+     origins=["http://localhost:5173", "https://web-production-165e2.up.railway.app"],
+     methods=["GET", "POST", "OPTIONS"])
 
 @app.route("/deteksi")
 def deteksi_bb():
