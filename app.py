@@ -29,7 +29,7 @@ app = Flask(__name__)
 
 
 CORS(app,
-     origins=["http://localhost:5173", "https://web-production-165e2.up.railway.app"],
+     origins=["http://localhost:5173", "https://web-production-165e2.up.railway.app", "https://nutrivision-brown.vercel.app"],
      methods=["GET", "POST", "OPTIONS"])
 
 @app.route("/deteksi")
