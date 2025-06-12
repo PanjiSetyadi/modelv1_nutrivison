@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 
 # Load model dan preprocessing
-model_obesitas = load_model("model_obesitas.keras")
-scaler_obesitas = joblib.load("scaler.pkl")
+model_obesitas = load_model("model_obesitas_fix.h5")
+scaler_obesitas = joblib.load("scaler_fix.pkl")
 label_encoder = joblib.load("label_encoder.pkl")
 
 
@@ -17,8 +17,8 @@ data = pd.read_csv("nutrition.csv")
 data.dropna(inplace=True)
 data["name_clean"] = data["name"].str.lower().str.strip()
 
-model = load_model("model_rekomendasi.keras")
-scaler = joblib.load("scaler_nutrisi.pkl")
+model = load_model("nutrisi_rekomendasi.h5")
+scaler = joblib.load("scaler_nutrisi_fix.pkl")
 
 # Normalisasi fitur numerik
 features = ['calories', 'proteins', 'fat', 'carbohydrate']
