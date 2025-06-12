@@ -26,9 +26,7 @@ X = scaler.transform(data[features])
 
 app = Flask(__name__)
 
-CORS(app)  # 👈 Ini mengizinkan semua origin mengakses API kamu
-
-
+CORS(app, origins=["http://localhost:5173", "https://web-production-165e2.up.railway.app"])
 
 @app.route("/deteksi")
 def deteksi_bb():
